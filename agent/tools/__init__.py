@@ -14,10 +14,11 @@ from .request_pr_review import request_pr_review
 from .slack_read_thread_messages import slack_read_thread_messages
 from .slack_thread_reply import slack_thread_reply
 from .update_finding import update_finding
-from .web_search import web_search
+from .web_search import aweb_search, web_search
 
 __all__ = [
     "add_finding",
+    "aweb_search",
     "fetch_url",
     "http_request",
     "linear_comment",

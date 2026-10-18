@@ -486,3 +486,28 @@ middleware=[
     run_ci_check,  # new middleware
 ],
 ```
+
+### Web search
+
+The LangGraph coding agent's `web_search` tool uses free, anonymous
+[Parallel Search MCP](https://docs.parallel.ai/integrations/mcp/search-mcp)
+when `EXA_API_KEY` is unset. Search uses Fast mode and needs no account or API key.
+Queries are sent to `https://search.parallel.ai/mcp`. Parallel returns source URLs
+and page excerpts, with up to the requested number of results (1–20).
+`include_contents=false` returns only titles and URLs. Use the existing `fetch_url`
+tool when you need a complete page.
+
+A configured `EXA_API_KEY` keeps the existing Exa auto search and full-content
+behavior. `WEB_SEARCH_PROVIDER=parallel` selects Parallel even with an Exa key;
+`WEB_SEARCH_PROVIDER=exa` requires that key. `WEB_SEARCH_PROVIDER=none` disables
+web search. An empty or unknown provider is a configuration error. Provider errors
+are returned to the agent without falling back to another provider. Parallel calls
+time out after 30 seconds; anonymous service limits are returned as search errors.
+These settings govern this built-in tool; subscription-backed CLI agents use
+their own tool configuration.
+
+```bash
+# Optional overrides in the agent environment:
+WEB_SEARCH_PROVIDER="parallel"  # parallel, exa, or none
+# EXA_API_KEY is only needed for Exa.
+```

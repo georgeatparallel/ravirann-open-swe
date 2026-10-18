@@ -26,6 +26,7 @@ from deepagents import create_deep_agent
 from deepagents.backends import LangSmithSandbox
 from deepagents.backends.protocol import SandboxBackendProtocol
 from langchain.agents.middleware import ModelCallLimitMiddleware
+from langchain_core.tools import StructuredTool
 from langsmith.sandbox import SandboxClientError
 
 from .integrations.langsmith import _configure_github_proxy
@@ -41,6 +42,7 @@ from .middleware import (
 )
 from .prompt import construct_system_prompt
 from .tools import (
+    aweb_search,
     fetch_url,
     http_request,
     linear_comment,
@@ -406,7 +408,7 @@ async def get_agent(config: RunnableConfig) -> Pregel:
         tools=[
             http_request,
             fetch_url,
-            web_search,
+            StructuredTool.from_function(web_search, coroutine=aweb_search),
             linear_comment,
             linear_create_issue,
             linear_delete_issue,
